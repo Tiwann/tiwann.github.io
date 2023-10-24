@@ -79,6 +79,34 @@
   }
 }
 
+.particles-icon-media {
+  margin: 0 1em;
+  pointer-events: all;
+  
+
+  svg {
+    transition: transform 0.333s;
+    transform: scale(1.5);
+  }
+
+  svg path {
+    fill: white;
+    stroke: none;
+  }
+
+  &:hover {
+
+    svg {
+      transform: scale(1.8);
+    }
+    
+    border-bottom: none;
+    svg path {
+      fill: #e7e7e7;
+    }
+  }
+}
+
 .particles-scroll {
   position: absolute;
   bottom: 5%;
