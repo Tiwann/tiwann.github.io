@@ -25,7 +25,7 @@ domain: tiwann.github.io       # if you want to force HTTPS, specify the domain 
 url: https://tiwann.com  # the base hostname and protocol for your site, e.g. http://example.com
 
 # Build settings
-theme: minima
+theme: cayman
 plugins:
   - jekyll-feed
 
