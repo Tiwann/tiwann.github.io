@@ -1,18 +1,10 @@
 ---
 layout: page
-title: About
+title: About me
 permalink: /about/
 ---
+![ProfilePicture](resources/aisaka.png)
+# Erwann Messoah
+### Game Design Student
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+Currently a game design student at ICAN Paris. Plan to specialize in game programming. I am looking for an intership as a game programmer or game designer, please contact me for more infromartion.
