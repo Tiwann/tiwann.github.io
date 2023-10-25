@@ -10,4 +10,7 @@ J'aime la création de jeux vidéo, j'en développe à coté de mes études sur 
 Je suis à la recherche d'un stage, pour plus d'informations vous pouvez [me contacter](mailto:erwann.messoah@gmail.com) et retrouver mon cv [ici](assets/cv.pdf).
 
 
+{% if site.articles.size >= 1 %}
+# Mes projets
 {% include archive.html %}
+{% endif %}

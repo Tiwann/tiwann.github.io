@@ -9,6 +9,14 @@ baseurl: ""
 permalink: pretty
 repo: https://github.com/tiwann/tiwann.github.io
 
+# Search for pages in _articles
+collections:
+  articles:
+    output: true
+
+markdown: kramdown
+highlighter: rouge
+
 # author settings
 
 author:
