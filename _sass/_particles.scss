@@ -4,6 +4,7 @@
   background-size: cover;
   background-attachment: fixed;
   background-color: var(--color-particles-background);
+  height: 320px;
 
   .particles-js-canvas-el {
     width: 100%;
@@ -30,7 +31,7 @@
 }
 
 .particles-photo {
-  width: 50%;
+  width: 15%;
   border-radius: 50%;
   margin: auto;
   margin-bottom: 0.5em;
