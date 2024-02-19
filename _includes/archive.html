@@ -1,10 +1,15 @@
 <div class="archive">
   {% for article in site.articles %}
-  <h2>{{ article.title }}</h2>
-  <span class="lead">{{ article.desc }}</span>
-  <a href="{{ article.url }}">Plus d'info.</a>
-  {% if article.image %}
-  <img src="{{ article.image }}" width="128" height="128">
+  <div class="post-preview">
+    <h2>{{ article.title }}</h2>
+    <span class="lead">{{ article.desc }}
+    <a href="{{ article.url }}">Plus d'info.</a>
+    </span>
+
+    
+    {% if article.image %}
+    <img src="{{ article.image }}" width="128" height="128">
+  </div>
   {% endif %}
   {% endfor %}
 </div>

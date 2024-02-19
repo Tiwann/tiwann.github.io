@@ -4,132 +4,18 @@ title: libbfbmp
 desc: Une bibliothèque C qui propose une API pour lire et écrire des fichier .bfbmp (Binary Format Beatmap)
 ---
 
-# 
-You can find below the file format specifications, so it is possible to write its own program that read/write bfbmp files. <br>
-Feel free to send a message at *erwann.messoah@gmail.com* for questions or suggestions. <br>
-*NB: I'm currently making heavy changes on the file format structure. Make sure to update frequently...* <br>
- 
-
-### Header
-The header contains basic information about the content of the file such as file size or chunk offsets <br>
-*All offsets in the file are relative to the beginning of the file* <br>
-
-| Type    | Size (bytes) | Description               |
-|---------|--------------|---------------------------|
-| char[4] | 4            | File ID "FBMP"            |
-| uint32  | 4            | Chunk size (should be 32) |
-| uint32  | 4            | Total file size           |
-| uint32  | 4            | Metadata chunk offset     |
-| uint32  | 4            | Image chunk offset        |
-| uint32  | 4            | Sound chunk offset        |
-| uint32  | 4            | Game chunk offset         |
-
-### Metadata Chunk
-The META chunk contains metadata information such as song name, audio bpm etc <br>
-
-| Type    | Size (bytes) | Description       |
-|---------|--------------|-------------------|
-| char[4] | 4            | Chunk ID "META"   |
-| uint32  | 4            | Chunk size        |
-| string  | ?            | Song name         |
-| string  | ?            | Sub name          |
-| string  | ?            | Author name       |
-| string  | ?            | Mapper name       |
-| float   | 4            | Beats per minute  |
-| uint32  | 4            | Beats per measure |
-| float   | 4            | Start offset      |
-
-
-### Image Chunk
-The IMG chunk contains image data. It can be jpeg data or png data. <br>
-
-| Type       | Size (Bytes)   | Description           |
-|------------|----------------|-----------------------|
-| char[4]    | 4              | IMG chunk ID *"!IMG"* |
-| uint32     | 4              | Chunk size            |
-| char[size] | size           | Data                  |
-
-### Sound Chunk
-The SND chunk contains sound data. It can be wav data, mp3 data, ogg data or flac data. <br>
-
-| Type       | Size (Bytes)   | Description           |
-|------------|----------------|-----------------------|
-| char[4]    | 4              | SND chunk ID *"!SND"* |
-| uint32     | 4              | Chunk size            |
-| char[size] | size           | Data                  |
-
-### Game Chunk
-The GAM chunk contains level data. <br>
-
-| Type       | Size (Bytes)       | Description                |
-|------------|--------------------|----------------------------|
-| char[4]    | 4                  | GAM chunk ID *"!GAM"*      |
-| uint32     | 4                  | Chunk size                 |
-| uint32     | 4                  | Number of level sub chunks |
-| level[num] | num * sizeof level | Level sub chunks           |
-
-#### Level Sub chunk
-
-| Type    | Size (Bytes) | Description           |
-|---------|--------------|-----------------------|
-| char[4] | 4            | LVL chunk ID *"!LVL"* |
-| string  | ?            | Level name            |
-| float   | 4            | Scroll speed          |
-
-#### Note sub chunk
-| Type      | Size (Bytes)      | Description           |
-|-----------|-------------------|-----------------------|
-| char[4]   | 4                 | NOT chunk ID *"!NOT"* |
-| uint32    | 4                 | Number of notes       |
-| note[num] | num * sizeof note | Notes                 |
-
-
-
-The type _**string**_ refers to the following structure
-
-| Type       | Size (bytes) | Description |
-|------------|--------------|-------------|
-| uint32     | 4            | Size        |
-| char[size] | size         | String data |
-
-The type _**note**_ refers to the following structure
-
-| Type   | Size (bytes) | Description         |
-|--------|--------------|---------------------|
-| uint32 | 4            | Note type           |
-| float  | 4            | position (in beats) |
-| float  | 4            | duration (in beats) |
-
-
-----------------------------------------------------------
-# How to build
-First of all, make sure to have **[git][gitlink]** installed then clone this repo.
-```shell
-git clone https://github.com/Tiwann/libbfbmp.git [directory]
-```
-This project uses **[premake][premakelink]** as build tool.
-
-## Building Visual Studio solution
-To build visual studio solution files <br>
-```shell
-$ PATH_TO_PREMAKE/premake5 vs2022
-```
-
-## Building Makefiles
-To build Makefile project
-```shell
-$ PATH_TO_PREMAKE/premake5 gmake2
-```
-
+# Introduction
+Le format de fichier .bfbmp (pour Binary Format Beatmap) est un format open source que je développe qui contient des informations de beatmaps pour des jeux de rhythme. Le format est pensé pour etre compact et interchangeable. Un fichier contient les métadonnées, une image, un son, et les données de niveaux. Un fichier peur contenir plusieurs niveaux de difficultés ou des versions alternatives. Comme il s'agit d'un format binaire les données sont illisibles par un humain et donc rend les modifications difficiles sans passer par l'api.<br/>
+Plus d'informations sur la page [github][libbfbmplink]
 -------------------------------------------------------
-# How to use
-To create a beatmap and write its data to a file:
+# Comment utiliser
+Pour creer une beatmap et ecrire des données dedans:
 ```c++
 #include <bfbmp/bfbmp.h>
 
 int main(void)
 {
-    // Initialize a beatmap object and set its metadata
+    // Initialiser une structure beatmap
     bfbmp_beatmap_t beatmap = bfbmp_beatmap_create();
     bfbmp_beatmap_set_song_name(&beatmap, "The Song Name");
     bfbmp_beatmap_set_sub_name(&beatmap, "feat. some artist");
@@ -139,7 +25,7 @@ int main(void)
     beatmap.metadata.beats_per_measure = 4;
     beatmap.metadata.start_offset = 0.0f;
 
-    // Create a level object and add notes to it
+    // Creer une structure level et ajouter des notes
     bfbmp_level_t level = bfbmp_level_create_with_name("Level Name");
     level.scroll_speed = 1.0f;
 
@@ -149,24 +35,24 @@ int main(void)
     note.type = bfbmp_note_normal;
     bfbmp_vector_note_push(&level.notes, note);
 
-    // Adding level into beatmap
+    // Ajouter le level a la beatmap
     bfbmp_vector_level_push(&beatmap.game_data, level);
     
-    // Load image and sound into beatmpa object
+    // Charger une image et un son
     bfbmp_beatmap_load_image(&beatmap, "Path/To/Image/File");
     bfbmp_beatmap_load_sound(&beatmap, "Path/To/Audio/File");
 
-    // Finally, write beatmap data to file
+    // Et écrire le fichier
     const char* filepath = "Path/To/OutputFile.bfbmp";
     const uint8_t result = bfbmp_beatmap_encode_file(&beatmap, filepath, BFBMP_FALSE);
     if(result != BFBMP_SUCCESS) fprintf(stderr, "Failed to write beatmap to file!");
 
-    // Always free the beatmap object after using it
+    // Toujours penser a liberer la mémoire
     bfbmp_beatmap_free(&beatmap);
 }
 ```
 
-To read beatmap data:
+Pour lire une beatmap:
 ```c++
 #include <bfbmp/bfbmp.h>
 
@@ -178,8 +64,8 @@ int main(void)
 }
 ```
 
-## Error handling
-Each public api functions return a `uint8_t` that is used as a boolean to check if an error occured. It's value could be `BFBMP_SUCCESS` or `BFBMP_FAIL`
+## Prise en charge des erreurs
+Chaque fonction de l'api return un `uint8_t` interprété comme un booléen. Ça valeur peur être `BFBMP_SUCCESS` or `BFBMP_FAIL`. C'est donc à l'utilisateur de traiter les erreurs
 
 ```c++
 #include <stdio.h>
@@ -201,7 +87,7 @@ int main(void)
 
 
 ## C++ Wrapper
-A C++ header `bfbmp.hpp` is provided in the `include` directory that abstracts all the apis into C++ classes.
+Un header C++ `bfbmp.hpp` est donné dans les `include`
 
 ```c++
 #include <bfbmp/bfbmp.hpp>
@@ -220,6 +106,6 @@ int main()
 }
 ```
 
-
+[libbfbmplink]:<https://github.com/Tiwann/libbfbmp.git>
 [gitlink]:<https://git-scm.com/downloads>
 [premakelink]:<https://premake.github.io/>
